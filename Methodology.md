@@ -15,11 +15,11 @@
 | 2  | visit_id         | string        | Идентификатор визита                                       |
 | 3  | client_id        | string        | Идентификатор клиента                                      |
 | 4  | url              | string        | URL страницы                                               |
-| 5  | duration         | int           | Время на сайте в секундах                                  |
+| 5  | duration         | integer       | Время на сайте в секундах                                  |
 | 6  | source           | string        | Тип источника, с которого ползователь пришел на сайт       |
 | 7  | utmcampaign      | string        | Название рекламной кампании                                |
 | 8  | event_type       | string        | Тип события                                                |
-| 9  | event_id         | bigint        | Идентификатор события                                      |
+| 9  | event_id         | integer       | Идентификатор события                                      |
 | 10 | submit_id        | bigint        | Идентификатор заявки                                       |
 | 11 | name             | string        | Имя клиента                                                |
 | 12 | phone            | string        | Мобильный телефон                                          |
@@ -31,14 +31,13 @@
 | 18 | fio              | string        | ФИО клиента                                                |
 | 19 | phone_deal       | string        | Мобильный телефон из таблицы со сделками                   |
 | 20 | email            | string        | Электронная почта                                          |
-| 21 | username         | string        | Имя пользователя из электронной почты                      |
-| 22 | domain           | string        | Домен электронной почты                                    |
-| 23 | address          | string        | Адрес места жительства                                     |
-| 24 | campaign_id      | int           | Идентификатор рекламной кампании                           |
-| 25 | campaign_name    | string        | Название рекламной кампании                                |
-| 26 | costs            | decimal(19,2) | Расходы на рекламу                                         |
-| 27 | clicks           | bigint        | Количество кликов                                          |
-| 28 | views            | bigint        | Количество просмотров                                      |
+| 21 | address          | string        | Адрес места жительства                                     |
+| 22 | username         | string        | Имя пользователя из электронной почты                      |
+| 23 | domain           | string        | Домен электронной почты                                    |
+| 24 | campaign_name    | string        | Название рекламной кампании                                |
+| 25 | costs            | decimal(19,2) | Расходы на рекламу                                         |
+| 26 | clicks           | bigint        | Количество кликов                                          |
+| 27 | views            | bigint        | Количество просмотров                                      |
 
 
 ### Таблица campaigns_agg
@@ -87,7 +86,7 @@
 
 ## Методология расчета
 
-### visits
+### visits (диалект ClickHouse)
 
 ```
 with filtered_step1 as (
@@ -148,7 +147,7 @@ from filtered_step2
 where event_type = 'submit';
 ```
 
-### costs
+### costs (диалект Postgres)
 
 ```
 select
@@ -162,7 +161,7 @@ group by date, campaign_id
 order by date, campaign_id;
 ```
 
-### submits
+### submits (Spark SQL)
 
 ```
 spark.sql("""
@@ -177,9 +176,14 @@ spark.sql("""
 """)
 ```
 
-### deals
+### deals (pandas)
 
 ```
+deals_pdf = spark.table('system_events.deals').toPandas()
 deals_pdf[['username', 'domain']] = deals_pdf['email'].str.split('@', expand=True)
 filtered_deals_pdf = deals_pdf[deals_pdf['domain'].isin(['example.com', 'example.org', 'example.net'])]
 ```
+
+## Логика сбора финальной витрины
+
+![customer_detailed drawio (2)](https://github.com/user-attachments/assets/ace94611-8638-42bb-87d8-f0f5d67a984b)
