@@ -90,59 +90,59 @@
 
 ```
 with filtered_step1 as (
-	select
-		visitDateTime::date as dt,
-		visitid,
-		clientID,
-		URL,
-		duration,
-		source,
-		UTMCampaign,
-		params,
-		replaceRegexpAll(params, '\[|\]', '') as params_regex,
-		splitByString(', ', replaceRegexpAll(params, '\[|\]', '')) as params_split
-	from marketing.visits
-	where visitDateTime >= '2024-01-01' and visitDateTime < '2025-01-28'
-	and source in ('ad', 'direct')
-	and (
-		match(URL, '.*checkout.*') or
-		match(URL, '.*add.*') or
-		match(URL, '.*home.*') or
-		match(URL, '.*contact.*') or
-		match(URL, '.*top50.*') or
-		match(URL, '.*customer-service.*') or
-		match(URL, '.*wishlist.*') or
-		match(URL, '.*sale.*') or
-		match(URL, '.*best-sellers.*') or
-		match(URL, '.*view.*') or
-		match(URL, '.*discount.*') or
-		match(URL, '.*featured.*') or
-		match(URL, '.*new-arrivals.*') or
-		match(URL, '.*settings.*') or
-		match(URL, '.*return-policy.*') or
-		match(URL, '.*edit.*') or
-		match(URL, '.*delete.*') or
-		match(URL, '.*reviews.*') or
-		match(URL, '.*products.*') or
-		match(URL, '.*about.*')
-	)
+    select
+        visitDateTime::date as dt,
+        visitid,
+        clientID,
+        URL,
+        duration,
+        source,
+        UTMCampaign,
+        params,
+        replaceRegexpAll(params, '\[|\]', '') as params_regex,
+        splitByString(', ', replaceRegexpAll(params, '\[|\]', '')) as params_split
+    from marketing.visits
+    where visitDateTime >= '2024-01-01' and visitDateTime < '2025-01-28'
+    and source in ('ad', 'direct')
+    and (
+        match(URL, '.*checkout.*') or
+        match(URL, '.*add.*') or
+        match(URL, '.*home.*') or
+        match(URL, '.*contact.*') or
+        match(URL, '.*top50.*') or
+        match(URL, '.*customer-service.*') or
+        match(URL, '.*wishlist.*') or
+        match(URL, '.*sale.*') or
+        match(URL, '.*best-sellers.*') or
+        match(URL, '.*view.*') or
+        match(URL, '.*discount.*') or
+        match(URL, '.*featured.*') or
+        match(URL, '.*new-arrivals.*') or
+        match(URL, '.*settings.*') or
+        match(URL, '.*return-policy.*') or
+        match(URL, '.*edit.*') or
+        match(URL, '.*delete.*') or
+        match(URL, '.*reviews.*') or
+        match(URL, '.*products.*') or
+        match(URL, '.*about.*')
+    )
 ),
 filtered_step2 as (
-	select *,
-	replaceAll(params_split[1], '\'', '') as event_type,
-	toInt32OrNull(params_split[2]) as event_id
-	from filtered_step1
+    select *,
+    replaceAll(params_split[1], '\'', '') as event_type,
+    toInt32OrNull(params_split[2]) as event_id
+    from filtered_step1
 )
 select
-	dt,
-	visitid,
-	clientID,
-	URL,
-	duration,
-	source,
-	UTMCampaign,
-	event_type,
-	event_id
+    dt,
+    visitid,
+    clientID,
+    URL,
+    duration,
+    source,
+    UTMCampaign,
+    event_type,
+    event_id
 from filtered_step2
 where event_type = 'submit';
 ```
@@ -151,14 +151,33 @@ where event_type = 'submit';
 
 ```
 select
-	date,
-	campaign_id,
-	round(sum(costs)::numeric, 2) as costs,
-	sum(clicks) as clicks,
-	sum(views) as views
+    date,
+    campaign_id,
+    round(sum(costs)::numeric, 2) as costs,
+    sum(clicks) as clicks,
+    sum(views) as views
 from public.costs
 group by date, campaign_id
 order by date, campaign_id;
+```
+
+### campaigns_dict (Spark SQL)
+
+```
+campaigns_dict = spark.read.option('header', True).csv('campaigns_dict.csv')
+campaigns_dict.createOrReplaceTempView('campaigns_dict_view')
+campaigns_dict = spark.sql("""
+    select
+        campaign_id,
+        campaign_name,
+        case
+            when campaign_name like 'year%' then 'Год'
+            when campaign_name like 'quarter%' then 'Квартал'
+            when campaign_name like 'month%' then 'Месяц'
+            else null
+        end as campaign_duration
+    from campaigns_dict_view
+""")	
 ```
 
 ### submits (Spark SQL)
@@ -194,5 +213,6 @@ filtered_deals_pdf = deals_pdf[deals_pdf['domain'].isin(['example.com', 'example
 - зеленый - итоговые таблицы
 
 
-![customer_detailed drawio (3)](https://github.com/user-attachments/assets/2e14cdb2-7bcb-496b-8424-2eb39e247973)
+![customer_detailed drawio (5)](https://github.com/user-attachments/assets/40846042-e4fd-43e7-bf96-6cdecb9fd895)
+
 
