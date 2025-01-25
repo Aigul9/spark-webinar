@@ -186,4 +186,11 @@ filtered_deals_pdf = deals_pdf[deals_pdf['domain'].isin(['example.com', 'example
 
 ## 4. Логика сбора финальной витрины
 
+Легенда:
+- фиолетовый - источники
+- бирюзовый - промежуточные таблицы
+- бордовый - очищенные и подготовленные датафреймы
+- синий - условия соединений
+- зеленый - итоговые таблицы
+
 ![customer_detailed drawio (2)](https://github.com/user-attachments/assets/ace94611-8638-42bb-87d8-f0f5d67a984b)
