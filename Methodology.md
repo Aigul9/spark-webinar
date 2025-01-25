@@ -193,4 +193,5 @@ filtered_deals_pdf = deals_pdf[deals_pdf['domain'].isin(['example.com', 'example
 - синий - условия соединений
 - зеленый - итоговые таблицы
 
-![customer_detailed drawio (2)](https://github.com/user-attachments/assets/ace94611-8638-42bb-87d8-f0f5d67a984b)
+
+![customer_detailed drawio (1)](https://github.com/user-attachments/assets/d2faf9c8-8df0-4e1e-bcc5-e000ee8d0e06)
