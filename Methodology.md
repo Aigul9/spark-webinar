@@ -5,7 +5,7 @@
 - campaigns_agg
 - dates_agg
 
-## Атрибутивный состав
+## 1. Атрибутивный состав
 
 ### Таблица customer_detailed
 
@@ -73,7 +73,7 @@
 
 
 
-## Источники
+## 2. Источники
 
 | № | Место хранения | Схема          | Таблица | Описание                                               |
 |---|----------------|----------------|---------|--------------------------------------------------------|
@@ -84,7 +84,7 @@
 | 5 | HDFS           | system_events  | deals   | Заказанные дизайн-проекты                              |
 
 
-## Методология расчета
+## 3. Методология расчета
 
 ### visits (диалект ClickHouse)
 
@@ -184,6 +184,6 @@ deals_pdf[['username', 'domain']] = deals_pdf['email'].str.split('@', expand=Tru
 filtered_deals_pdf = deals_pdf[deals_pdf['domain'].isin(['example.com', 'example.org', 'example.net'])]
 ```
 
-## Логика сбора финальной витрины
+## 4. Логика сбора финальной витрины
 
 ![customer_detailed drawio (2)](https://github.com/user-attachments/assets/ace94611-8638-42bb-87d8-f0f5d67a984b)
