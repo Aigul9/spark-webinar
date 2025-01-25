@@ -28,7 +28,7 @@ with filtered_step1 as (
 		params,
 		replaceRegexpAll(params, '\[|\]', '') as params_regex,
 		splitByString(', ', replaceRegexpAll(params, '\[|\]', '')) as params_split
-	from sberbank.visits_example
+	from marketing.visits
 	where visitDateTime >= '2024-01-01' and visitDateTime < '2025-01-28'
 	and source in ('ad', 'direct')
 	and (
