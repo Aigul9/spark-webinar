@@ -20,13 +20,13 @@
 | 7  | utmcampaign      | string        | Название рекламной кампании                                |
 | 8  | event_type       | string        | Тип события                                                |
 | 9  | event_id         | integer       | Идентификатор события                                      |
-| 10 | submit_id        | bigint        | Идентификатор заявки                                       |
+| 10 | submit_id        | long        | Идентификатор заявки                                       |
 | 11 | name             | string        | Имя клиента                                                |
 | 12 | phone            | string        | Мобильный телефон                                          |
 | 13 | phone_plus       | string        | Мобильный телефон со знаком +                              |
 | 14 | phone_md5        | string        | Мобильный телефон, хешированный алгоритмом md5             |
 | 15 | phone_plus_md5   | string        | Мобильный телефон со знаком +, хешированный алгоритмом md5 |
-| 16 | deal_id          | bigint        | Идентификатор сделки                                       |
+| 16 | deal_id          | long        | Идентификатор сделки                                       |
 | 17 | deal_date        | string        | Дата сделки                                                |
 | 18 | fio              | string        | ФИО клиента                                                |
 | 19 | phone_deal       | string        | Мобильный телефон из таблицы со сделками                   |
@@ -36,8 +36,8 @@
 | 23 | domain           | string        | Домен электронной почты                                    |
 | 24 | campaign_name    | string        | Название рекламной кампании                                |
 | 25 | costs            | decimal(19,2) | Расходы на рекламу                                         |
-| 26 | clicks           | bigint        | Количество кликов                                          |
-| 27 | views            | bigint        | Количество просмотров                                      |
+| 26 | clicks           | long        | Количество кликов                                          |
+| 27 | views            | long        | Количество просмотров                                      |
 
 
 ### 2) Таблица campaigns_agg
@@ -45,14 +45,14 @@
 | №  | Название столбца | Тип данных    | Описание                                   |
 |----|------------------|---------------|--------------------------------------------|
 | 1  | campaign_name    | string        | Название рекламной кампании                |
-| 2  | unique_visits    | bigint        | Количество визитов                         |
-| 3  | unique_clients   | bigint        | Количество уникальных клиентов             |
-| 4  | unique_submits   | bigint        | Количество заявок                          |
-| 5  | unique_deals     | bigint        | Количество сделок                          |
+| 2  | unique_visits    | long        | Количество визитов                         |
+| 3  | unique_clients   | long        | Количество уникальных клиентов             |
+| 4  | unique_submits   | long        | Количество заявок                          |
+| 5  | unique_deals     | long        | Количество сделок                          |
 | 6  | total_costs      | decimal(19,2) | Общая сумма расходов на рекламу            |
-| 7  | total_clicks     | bigint        | Общая сумма кликов                         |
-| 8  | total_views      | bigint        | Общая сумма просмотров                     |
-| 9  | total_duration   | bigint        | Общая продолжительность визитов в секундах |
+| 7  | total_clicks     | long        | Общая сумма кликов                         |
+| 8  | total_views      | long        | Общая сумма просмотров                     |
+| 9  | total_duration   | long        | Общая продолжительность визитов в секундах |
 | 10 | avg_deal_cost    | decimal(19,2) | Средняя сумма сделки                       |
 
 
@@ -61,14 +61,14 @@
 | №  | Название столбца | Тип данных    | Описание                                   |
 |----|------------------|---------------|--------------------------------------------|
 | 1  | date             | string        | Дата по расходам                           |
-| 2  | unique_visits    | bigint        | Количество визитов                         |
-| 3  | unique_clients   | bigint        | Количество уникальных клиентов             |
-| 4  | unique_submits   | bigint        | Количество заявок                          |
-| 5  | unique_deals     | bigint        | Количество сделок                          |
+| 2  | unique_visits    | long        | Количество визитов                         |
+| 3  | unique_clients   | long        | Количество уникальных клиентов             |
+| 4  | unique_submits   | long        | Количество заявок                          |
+| 5  | unique_deals     | long        | Количество сделок                          |
 | 6  | total_costs      | decimal(19,2) | Общая сумма расходов на рекламу            |
-| 7  | total_clicks     | bigint        | Общая сумма кликов                         |
-| 8  | total_views      | bigint        | Общая сумма просмотров                     |
-| 9  | total_duration   | bigint        | Общая продолжительность визитов в секундах |
+| 7  | total_clicks     | long        | Общая сумма кликов                         |
+| 8  | total_views      | long        | Общая сумма просмотров                     |
+| 9  | total_duration   | long        | Общая продолжительность визитов в секундах |
 | 10 | avg_deal_cost    | decimal(19,2) | Средняя сумма сделки                       |
 
 
