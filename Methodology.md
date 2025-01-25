@@ -60,7 +60,7 @@
 
 | №  | Название столбца | Тип данных    | Описание                                   |
 |----|------------------|---------------|--------------------------------------------|
-| 1  | date             | string        | Дата по расходам                           |
+| 1  | month            | string        | Месяц по расходам                           |
 | 2  | unique_visits    | long        | Количество визитов                         |
 | 3  | unique_clients   | long        | Количество уникальных клиентов             |
 | 4  | unique_submits   | long        | Количество заявок                          |
@@ -194,4 +194,5 @@ filtered_deals_pdf = deals_pdf[deals_pdf['domain'].isin(['example.com', 'example
 - зеленый - итоговые таблицы
 
 
-![customer_detailed drawio (1)](https://github.com/user-attachments/assets/d2faf9c8-8df0-4e1e-bcc5-e000ee8d0e06)
+![customer_detailed drawio (3)](https://github.com/user-attachments/assets/2e14cdb2-7bcb-496b-8424-2eb39e247973)
+
