@@ -213,6 +213,7 @@ filtered_deals_pdf = deals_pdf[deals_pdf['domain'].isin(['example.com', 'example
 - зеленый - итоговые таблицы
 
 
-![customer_detailed drawio (5)](https://github.com/user-attachments/assets/40846042-e4fd-43e7-bf96-6cdecb9fd895)
+![customer_detailed drawio (6)](https://github.com/user-attachments/assets/94bb1a47-acba-4544-b2b6-81ce237f2aa7)
+
 
 
