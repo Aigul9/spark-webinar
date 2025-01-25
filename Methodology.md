@@ -147,7 +147,7 @@ from filtered_step2
 where event_type = 'submit';
 ```
 
-### 2costs (диалект Postgres)
+### costs (диалект Postgres)
 
 ```
 select
