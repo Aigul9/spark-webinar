@@ -164,7 +164,7 @@ order by date, campaign_id;
 ### submits (Spark SQL)
 
 ```
-spark.sql("""
+submits = spark.sql("""
     SELECT
         submit_id,
         name,
