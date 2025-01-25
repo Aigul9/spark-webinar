@@ -31,12 +31,15 @@
 | 18 | fio              | string        | ФИО клиента                                                |
 | 19 | phone_deal       | string        | Мобильный телефон из таблицы со сделками                   |
 | 20 | email            | string        | Электронная почта                                          |
-| 21 | address          | string        | Адрес места жительства                                     |
-| 22 | campaign_id      | int           | Идентификатор рекламной кампании                           |
-| 23 | campaign_name    | string        | Название рекламной кампании                                |
-| 24 | costs            | decimal(19,2) | Расходы на рекламу                                         |
-| 25 | clicks           | bigint        | Количество кликов                                          |
-| 26 | views            | bigint        | Количество просмотров                                      |
+| 21 | username         | string        | Имя пользователя из электронной почты                      |
+| 22 | domain           | string        | Домен электронной почты                                    |
+| 23 | address          | string        | Адрес места жительства                                     |
+| 24 | campaign_id      | int           | Идентификатор рекламной кампании                           |
+| 25 | campaign_name    | string        | Название рекламной кампании                                |
+| 26 | costs            | decimal(19,2) | Расходы на рекламу                                         |
+| 27 | clicks           | bigint        | Количество кликов                                          |
+| 28 | views            | bigint        | Количество просмотров                                      |
+
 
 ### Таблица campaigns_agg
 
@@ -52,6 +55,7 @@
 | 8  | total_views      | bigint        | Общая сумма просмотров                     |
 | 9  | total_duration   | bigint        | Общая продолжительность визитов в секундах |
 | 10 | avg_deal_cost    | decimal(19,2) | Средняя сумма сделки                       |
+
 
 ### Таблица dates_agg
 
@@ -69,4 +73,113 @@
 | 10 | avg_deal_cost    | decimal(19,2) | Средняя сумма сделки                       |
 
 
+
 ## Источники
+
+| № | Место хранения | Схема          | Таблица | Описание                                               |
+|---|----------------|----------------|---------|--------------------------------------------------------|
+| 1 | ClickHouse     | marketing      | visits  | Посещение пользователями нашего сайта                  |
+| 2 | Postgres       | public         | costs   | Расходы на рекламу                                     |
+| 3 | csv            | -              | -       | Словарик с сопоставлением рекламных кампаний           |
+| 4 | HDFS           | website_events | submits | Заполненные формы на сайте для заявки/обратного звонка |
+| 5 | HDFS           | system_events  | deals   | Заказанные дизайн-проекты                              |
+
+
+## Методология расчета
+
+### visits
+
+```
+with filtered_step1 as (
+	select
+		visitDateTime::date as dt,
+		visitid,
+		clientID,
+		URL,
+		duration,
+		source,
+		UTMCampaign,
+		params,
+		replaceRegexpAll(params, '\[|\]', '') as params_regex,
+		splitByString(', ', replaceRegexpAll(params, '\[|\]', '')) as params_split
+	from marketing.visits
+	where visitDateTime >= '2024-01-01' and visitDateTime < '2025-01-28'
+	and source in ('ad', 'direct')
+	and (
+		match(URL, '.*checkout.*') or
+		match(URL, '.*add.*') or
+		match(URL, '.*home.*') or
+		match(URL, '.*contact.*') or
+		match(URL, '.*top50.*') or
+		match(URL, '.*customer-service.*') or
+		match(URL, '.*wishlist.*') or
+		match(URL, '.*sale.*') or
+		match(URL, '.*best-sellers.*') or
+		match(URL, '.*view.*') or
+		match(URL, '.*discount.*') or
+		match(URL, '.*featured.*') or
+		match(URL, '.*new-arrivals.*') or
+		match(URL, '.*settings.*') or
+		match(URL, '.*return-policy.*') or
+		match(URL, '.*edit.*') or
+		match(URL, '.*delete.*') or
+		match(URL, '.*reviews.*') or
+		match(URL, '.*products.*') or
+		match(URL, '.*about.*')
+	)
+),
+filtered_step2 as (
+	select *,
+	replaceAll(params_split[1], '\'', '') as event_type,
+	toInt32OrNull(params_split[2]) as event_id
+	from filtered_step1
+)
+select
+	dt,
+	visitid,
+	clientID,
+	URL,
+	duration,
+	source,
+	UTMCampaign,
+	event_type,
+	event_id
+from filtered_step2
+where event_type = 'submit';
+```
+
+### costs
+
+```
+select
+	date,
+	campaign_id,
+	round(sum(costs)::numeric, 2) as costs,
+	sum(clicks) as clicks,
+	sum(views) as views
+from public.costs
+group by date, campaign_id
+order by date, campaign_id;
+```
+
+### submits
+
+```
+spark.sql("""
+    SELECT
+        submit_id,
+        name,
+        CAST(phone AS STRING) AS phone,
+        CONCAT('+', phone) AS phone_plus,
+        MD5(CAST(phone AS STRING)) AS phone_md5,
+        MD5(CONCAT('+', phone)) AS phone_plus_md5
+    FROM website_events.submits
+""")
+```
+
+### deals
+
+```
+deals_pdf[['username', 'domain']] = deals_pdf['email'].str.split('@', expand=True)
+filtered_deals_pdf = deals_pdf[deals_pdf['domain'].isin(['example.com', 'example.org', 'example.net'])]
+```
