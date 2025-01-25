@@ -1,4 +1,4 @@
-dCREATE TABLE sberbank.visits_example on cluster sber
+CREATE TABLE marketing.visits
 (
     visitid Int32,
     visitDateTime DateTime,
@@ -9,29 +9,11 @@ dCREATE TABLE sberbank.visits_example on cluster sber
     UTMCampaign String,
     params String
 )
-ENGINE = ReplicatedMergeTree
+ENGINE = MergeTree
 ORDER BY visitDateTime;
 
+select * from marketing.visits;
 
-select * from sberbank.visits_example;
-
-
-CREATE TABLE sberbank.visits_example on cluster sber
-(
-    visitid Int32,
-    visitDateTime DateTime,
-    URL String,
-    duration Int32,
-    clientID Int32,
-    source String,
-    UTMCampaign String,
-    params String
-)
-ENGINE = ReplicatedMergeTree
-ORDER BY visitDateTime;
-
-
-select * from sberbank.visits_example;
 
 --match methodology
 with filtered_step1 as (
@@ -74,13 +56,10 @@ with filtered_step1 as (
 ),
 filtered_step2 as (
 	select *,
-	--params_split[1],
-	--params_split[2],
 	replaceAll(params_split[1], '\'', '') as event_type,
 	toInt32OrNull(params_split[2]) as event_id
 	from filtered_step1
 )
---select * from filtered_step2
 select
 	dt,
 	visitid,
