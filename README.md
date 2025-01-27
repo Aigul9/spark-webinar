@@ -40,7 +40,7 @@ cd 'E:\Program Files\Metabase2'
 java -jar metabase.jar
 ```
 
-### Ссылки на локальных сервисов
+### Ссылки на локальные сервисы
 
 Jupyter Notebook - http://localhost:8888/notebooks/jupyter-files/webinar.ipynb
 
