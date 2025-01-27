@@ -25,9 +25,9 @@
 
 ### Драйверы для бд
 
-[Postgres](https://jdbc.postgresql.org/download/)
+Postgres - https://jdbc.postgresql.org/download/
 
-[ClickHouse](https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc)
+ClickHouse - https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc
 
 ### Запуск ClickHouse в Docker
 
@@ -43,6 +43,8 @@ java -jar metabase.jar
 ### Ссылки на локальных сервисов
 
 Jupyter Notebook - http://localhost:8888/notebooks/jupyter-files/webinar.ipynb
+
+Spark UI - http://host.docker.internal:4040/
 
 Metabase - http://localhost:3000/dashboard/99-webinar
 
