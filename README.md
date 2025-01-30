@@ -1,6 +1,8 @@
 # spark-webinar
 
-Материалы к моему вебинару "Собираем витрину данных: от описания до результата": [запись тут](https://www.youtube.com/watch?v=ufR-__6_PqQ)
+Материалы к моему вебинару "Собираем витрину данных: от описания до результата"
+
+[Запись тут](https://www.youtube.com/watch?v=ufR-__6_PqQ)
 
 - [Webinar.pdf](https://github.com/Aigul9/spark-webinar/tree/main/Webinar.pdf) - презентация к вебинару
 - [Methodology.md](https://github.com/Aigul9/spark-webinar/tree/main/Methodology.md) - методология для разработки витрины
